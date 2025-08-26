@@ -1,0 +1,17 @@
+[
+  {
+    "pickup_location": "DFW",
+    "dropoff_location": "Irving",
+    "vehicle": "Sedan"
+  },
+  {
+    "pickup_location": "JFK",
+    "dropoff_location": "Manhattan",
+    "vehicle": "Limousine"
+  },
+  {
+    "pickup_location": "Dallas",
+    "dropoff_location": "Euless",
+    "vehicle": "Sedan"
+  }
+]
