@@ -12,10 +12,10 @@ describe('Dispatch Test', () => {
 
     cy.get('#Password', { timeout: 40000 })
       .type('Bayestest25@');
-    cy.get('.custom-btn', { timeout: 40000 }).click({ force: true }); 
+    cy.get('.custom-btn', { timeout: 40000 }).click({ force: true });
     cy.url({ timeout: 40000 }).should('include', 'dispatch/dashboard');
 
-    cy.wait(3000); 
+    cy.wait(3000);
     // Navigate to ride booking page
     cy.visit('https://rc.synq7.com/ride/booking');
     cy.wait(1000);
@@ -57,7 +57,7 @@ describe('Dispatch Test', () => {
       cy.wait(3000);
 
       //Click on Show Vehicle Button
-      cy.get('.btn', { timeout: 40000 }) 
+      cy.get('.btn', { timeout: 40000 })
         .should('be.enabled')
         .click({ force: true });
 
@@ -73,15 +73,18 @@ describe('Dispatch Test', () => {
     cy.get('.res_btn_group > :nth-child(2)', { timeout: 40000 }).click()
 
     //Filling Billing Info
-    cy.get('#PassengerCard', { timeout: 40000 }).select('Amex## - 0005')
+    cy.get('#PassengerCard', { timeout: 40000 })
+    .should('be.visible')
+    .select('25110001', { force: true });
+ 
     cy.get('.bbtn', { timeout: 40000 }).click()
 
     //Retrieving Reservation Number
     cy.get('h3.mt-20', { timeout: 40000 })
       .invoke('text')
       .then((text) => {
-        const reservationNumber = text.match(/\d+/)[0]; 
-        cy.log('Reservation Number:', reservationNumber); 
+        const reservationNumber = text.match(/\d+/)[0];
+        cy.log('Reservation Number:', reservationNumber);
         console.log('Reservation Number:', reservationNumber);
 
         // Store reservationNumber as an alias to use later
@@ -90,8 +93,8 @@ describe('Dispatch Test', () => {
 
     // Click on Dispatch Button after reservation
     cy.get('.d-flex > [routerlink="/ride/dispatch/dashboard"]', { timeout: 60000 })
-    .should('be.visible')
-    .click({ force: true });
+      .should('be.visible')
+      .click({ force: true });
 
     //Click Find Ride
     cy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', { timeout: 60000 }).click({ force: true });
@@ -106,27 +109,27 @@ describe('Dispatch Test', () => {
 
     //Filling and Editing Details in Reservation
     cy.get('.tabulator-row > [tabulator-field="ResStatus"]', { timeout: 40000 }).dblclick()
-    cy.get('[ngbtooltip="Edit/Change"]', { timeout: 40000 }).click({force:true})
+    cy.get('[ngbtooltip="Edit/Change"]', { timeout: 40000 }).click({ force: true })
 
     //Adding First Stop
-    cy.get('.stop-add', { timeout: 40000 }).click({force:true})
+    cy.get('.stop-add', { timeout: 40000 }).click({ force: true })
     cy.wait(1000)
     cy.get('#ReservationAddress', { timeout: 40000 })
-      .click({ force: true }) 
-      .type('Irving')         
-      .wait(500)             
-      .type('{downarrow}')    
+      .click({ force: true })
+      .type('Irving')
+      .wait(500)
+      .type('{downarrow}')
       .type('{enter}');
-    cy.get('.accordion-button', { timeout: 40000 }).click({force:true})
+    cy.get('.accordion-button', { timeout: 40000 }).click({ force: true })
     cy.wait(500)
-    cy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('05')
-    cy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('Love Road')
-    cy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('1111')
+    cy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('05')
+    cy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('Love Road')
+    cy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('1111')
     cy.get('.CountryNumberInput', { timeout: 40000 }).click().type('7897897899')
-    cy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('Will wait here for 3 Mins')
-    cy.get('.col-sm-12 > .btn', { timeout: 40000 }).click({force:true})
+    cy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('Will wait here for 3 Mins')
+    cy.get('.col-sm-12 > .btn', { timeout: 40000 }).click({ force: true })
     cy.wait(1000)
-    cy.get('.mr-2', { timeout: 40000 }).click({force:true})
+    cy.get('.mr-2', { timeout: 40000 }).click({ force: true })
 
     //Adding Second Stop
     cy.get('.stop-add', { timeout: 40000 }).click({ force: true })
@@ -139,18 +142,18 @@ describe('Dispatch Test', () => {
       .type('{enter}');
     cy.get('.accordion-button', { timeout: 40000 }).click({ force: true })
     cy.wait(500)
-    cy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('6th')
-    cy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('Ring Road')
+    cy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('6th')
+    cy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('Ring Road')
     cy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', { timeout: 40000 }).click().type('5000')
-    cy.get('.CountryNumberInput', { timeout: 40000 }).click({force:true}).type('5656565656')
-    cy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click({force:true}).type('Not going to wait here for long')
-    cy.get('.col-sm-12 > .btn', { timeout: 40000 }).click({force:true})
+    cy.get('.CountryNumberInput', { timeout: 40000 }).click({ force: true }).type('5656565656')
+    cy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('Not going to wait here for long')
+    cy.get('.col-sm-12 > .btn', { timeout: 40000 }).click({ force: true })
 
     //Validating users cannot add more than two stops when its oneway
     cy.wait(1000)
     cy.get('.stop-add', { timeout: 40000 }).click()
     cy.wait(500)
-    cy.get('.modal-body > .text-center > p').should('contain.text','You can’t add more than two stops for "OneWay" ride. Please select "By the Hour". Do you want to change it?')
+    cy.get('.modal-body > .text-center > p').should('contain.text', 'You can’t add more than two stops for "OneWay" ride. Please select "By the Hour". Do you want to change it?')
     cy.wait(500)
     cy.get('.modal-transparent__btn', { timeout: 40000 }).click()
     cy.wait(500)
@@ -225,7 +228,8 @@ describe('Dispatch Test', () => {
     cy.get('.col-sm-12 > .d-flex > .btn', { timeout: 40000 }).click()
     cy.get('.modal-primary__btn', { timeout: 40000 }).click()
 
-
+    //Sending Updated Confimation
+    cy.get('.res_btn_group > .btn').click()
 
 
 
