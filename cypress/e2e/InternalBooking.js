@@ -16,9 +16,8 @@ describe('Dispatch Test', () => {
     cy.url({ timeout: 40000 }).should('include', 'dispatch/dashboard');
 
     cy.wait(3000);
-    // Navigate to ride booking page
-    cy.visit('https://rc.synq7.com/ride/booking');
-    cy.wait(1000);
+    cy.get('span.btn-text', { timeout: 10000 }).click({ force: true });
+
 
     //Filling Up Passenger Info
     cy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', { timeout: 40000 }).should('be.enabled')
@@ -72,12 +71,19 @@ describe('Dispatch Test', () => {
     //Click on Reserve Button
     cy.get('.res_btn_group > :nth-child(2)', { timeout: 40000 }).click()
 
-    //Filling Billing Info
-    cy.get('#PassengerCard', { timeout: 40000 })
-    .should('be.visible')
-    .select('25110001', { force: true });
- 
-    cy.get('.bbtn', { timeout: 40000 }).click()
+    // //Credit Card
+    // cy.get('#PassengerCard', { timeout: 40000 })
+    //   .should('be.visible')
+    //   .select('25110001', { force: true });
+
+    // cy.get('.bbtn', { timeout: 40000 }).click()
+
+    //ACH
+    cy.get('#PaymentMethod', { timeout: 40000 })
+      .should('be.visible')
+      .select('AH', { force: true })
+      .should('have.value', 'AH');
+    cy.get('button.bbtn.btn-small', { timeout: 40000 }).click();
 
     //Retrieving Reservation Number
     cy.get('h3.mt-20', { timeout: 40000 })

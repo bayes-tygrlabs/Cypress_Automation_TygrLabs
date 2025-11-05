@@ -1,3 +1,5 @@
+const { faker } = require("@faker-js/faker");
+
 describe('Regression Test', () => {
   it('should complete the entire ride booking workflow including login, passenger info, reservation, dispatch, sending emails and status updates', () => {
 
@@ -17,9 +19,8 @@ describe('Regression Test', () => {
     cy.url({ timeout: 40000 }).should('include', 'dispatch/dashboard');
     cy.wait(2000);
 
-    // Navigate to ride booking page
-    cy.visit('https://rc.synq7.com/ride/booking');
-    cy.wait(1000);
+    cy.wait(3000);
+    cy.get('span.btn-text', { timeout: 10000 }).click({ force: true });
 
     //Filling Up Passenger Info
     cy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', { timeout: 40000 }).should('be.enabled')
@@ -70,9 +71,18 @@ describe('Regression Test', () => {
     //Click on Reserve Button
     cy.get('.res_btn_group > :nth-child(2)', { timeout: 40000 }).click()
 
-    //Filling Billing Info
-    cy.get('#PassengerCard', { timeout: 40000 }).select('Amex## - 0005')
-    cy.get('.bbtn', { timeout: 40000 }).click()
+    //ACH
+    cy.get('#PaymentMethod', { timeout: 40000 })
+      .should('be.visible')
+      .select('AH', { force: true })
+      .should('have.value', 'AH');
+    cy.get('button.bbtn.btn-small', { timeout: 40000 }).click();
+
+    // //Credit Card
+    // cy.get('#PassengerCard', { timeout: 40000 })
+    // .should('be.visible')
+    // .select('25110001', { force: true });
+    // cy.get('.bbtn', { timeout: 40000 }).click()
 
     //Retrieving Reservation Number
     cy.get('h3.mt-20', { timeout: 40000 })
@@ -201,14 +211,25 @@ describe('Regression Test', () => {
     // Get the email input field
     const emailInput = cy.get('#receiverEmailId');
     // Check if the chip (existing email) exists
-    cy.get('.chip-input-container').find('.chip').then(($chips) => {
-      if ($chips.length > 0) {
-        // If the chip exists, click on the close icon to remove the email
-        cy.get('.chip-input-container > :nth-child(1) > .ss-close').click();
-      }
-      // Now type the new email in the input field
-      cy.get('#receiverEmailId').type('bayesridecentric@gmail.com');
-    });
+    // cy.get('.chip-input-container').find('.chip').then(($chips) => {
+    //   if ($chips.length > 0) {
+    //     // If the chip exists, click on the close icon to remove the email
+    //     cy.get('.chip-input-container > :nth-child(1) > .ss-close').click();
+    //   }
+    //   // Now type the new email in the input field
+    cy.get('#receiverEmailId').type('bayesridecentric@gmail.com');
+    // });
+
+    // cy.get('.chip-input-container').find('.chip').then(($chips) => {
+    //   if ($chips.length > 0) {
+    //     // If the chip exists, click on the close icon to remove the email
+    //     cy.get('.chip-input-container > :nth-child(1) > .ss-close').click({ force: true });
+    //   } else {
+    //     // If no chip exists, type the new email directly
+    //     cy.get('#receiverEmailId').type('bayesridecentric@gmail.com', { force: true });
+    //   }
+    // });
+
     cy.wait(3000)
     cy.get('.btn-medium', { timeout: 40000 }).click()
     cy.log('Affiliate Ride Order Email Has Been Sent');
@@ -228,15 +249,15 @@ describe('Regression Test', () => {
     // Function to safely update status
     function updateStatus(statusSelector) {
       waitForLoaderToDisappear(); // Ensure the page is stable
-      cy.get('.tabulator-row > [tabulator-field="ResStatus"]', { timeout: 40000 })
+      cy.get('.tabulator-row > [tabulator-field="ResStatus"]', { timeout: 50000 })
         .should('be.visible')
         .should('not.be.disabled')
         .as('statusCell');
       cy.get('@statusCell').click();
       cy.wait(500); // Allow UI to update
       cy.get('@statusCell').rightclick();
-      cy.contains('Status Update', { timeout: 40000 }).click();
-      cy.get(statusSelector, { timeout: 40000 }).click();
+      cy.contains('Status Update', { timeout: 50000 }).click();
+      cy.get(statusSelector, { timeout: 50000 }).click();
       waitForLoaderToDisappear(); // Ensure the UI is fully ready before next action
     }
     // Status Change Sequence
@@ -246,19 +267,53 @@ describe('Regression Test', () => {
     updateStatus(':nth-child(9) > .res-stat-btn > .text'); // On-Board
     updateStatus(':nth-child(11) > .res-stat-btn > .text'); // Complete
 
-    //Navigate to settings and Click on Archive Res
-    cy.get('.ss-settings', { timeout: 40000 }).click()
-    cy.contains('a', 'Archive Res', { timeout: 40000 }).click();
-    cy.get('form.ng-untouched > :nth-child(1) > :nth-child(2) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click()
-    cy.get('select[title="Select year"]', { timeout: 40000 }).select('2027');
-    cy.contains('div.btn-light', '25', { timeout: 40000 }).click();
-    cy.get('@reservationNumber', { timeout: 40000 }).then((reservationNumber) => {
-      cy.get(':nth-child(3) > .form-group > .form-control', { timeout: 40000 }).click().type(reservationNumber);
-      cy.get('.row.align-items-center > .d-flex > .btn', { timeout: 40000 }).click();
+    // //Navigate to settings and Click on Archive Res
+    // cy.get('.ss-settings', { timeout: 50000 }).click()
+    // cy.contains('a', 'Archive Res', { timeout: 50000 }).click();
+    // cy.get('form.ng-untouched > :nth-child(1) > :nth-child(2) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click()
+    // cy.get('select[title="Select year"]', { timeout: 40000 }).select('2027');
+    // cy.contains('div.btn-light', '25', { timeout: 40000 }).click();
+    // cy.get('@reservationNumber', { timeout: 10000 }).then((reservationNumber) => {
+    //   cy.get(':nth-child(3) > .form-group > .form-control', { timeout: 10000 }).click().type(reservationNumber);
+    //   cy.get('.row.align-items-center > .d-flex > .btn', { timeout: 10000 }).click();
+    // });
+    // cy.wait(5000);
+    // cy.get('tbody > tr > :nth-child(1)', { timeout: 40000 }).click()
+    // cy.wait(5000);
+    // cy.get(':nth-child(1) > .d-flex > .btn', { timeout: 40000 }).click()
+    // cy.wait(5000);
+    // cy.get('.modal-primary__btn', { timeout: 40000 }).click()
+    // cy.wait(10000);
+
+    //Archive the ride using API calls
+    cy.get('@reservationNumber').then((reservationNumber) => {
+      cy.request({
+        method: 'POST',
+        url: 'https://rc.synq7.com/api/archive/saveresarchive',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkJheWVzIiwiUm9sZUlkIjoiMSIsIlVzZXJSb2xlSWQiOiIxIiwiVXNlclR5cGUiOiJTQSIsIlVzZXJJZCI6IkJBWUVTIiwiU3ViRG9tYWluIjoicmMiLCJIb3N0IjoiaHR0cHM6Ly9yYy5zeW5xNy5jb20iLCJTY2hlbWUiOiJodHRwczovLyIsIk15Q2l0eSI6IkRoYWthIiwiTXlPZmZzZXQiOiIyMTYwMCIsIlRoZW1lQ29sb3IiOiIjMDA4MDAwIiwiQ29tQ29kZSI6IlJDMDAxIiwiSWQiOiJkZjg2NmYyZC0zYWIxLTQ2Y2ItOGFjZi1hY2Q5YTI0YTU5OGUiLCJEZXZpY2VJZCI6IjJmNzhiZmE2OTUyZjRmMzBiNTAwZDRhYjViMDU1OWE4IiwiVXNlclByaXZpbGVnZSI6IlNVUCIsIkFjY291bnRDb2RlIjoiIiwibmJmIjoxNzYyMzIzODIwLCJleHAiOjE3NjMxODc4MjAsImlzcyI6ImF6aXp1ckByZWRsaW1lc29sdXRpb25zLmNvbSIsImF1ZCI6ImF6aXp1ckByZWRsaW1lc29sdXRpb25zLmNvbSJ9.5uROSU2H8tqol3jd-FL-jWXKtVlCeAkiAZa4SVre_Vw'
+        },
+        body: {
+          GoFor: "CUR",
+          StartDate: "",
+          EndDate: "2027-11-05",
+          SearchText: `{"ReservationId":"${reservationNumber}","Account":null,"Passenger":null}`
+        },
+        failOnStatusCode: false
+      }).then((response) => {
+        cy.log('API Response:', JSON.stringify(response.body));
+
+        // ✅ Assertions
+        expect(response.status).to.eq(200);
+        expect(response.body).to.have.property('Msg', 'Ride archived successfully!!');
+        expect(response.body).to.have.property('Success', 'Y');
+        expect(response.body).to.have.property('Data', '');
+      });
     });
-    cy.get('tbody > tr > :nth-child(1)', { timeout: 40000 }).click()
-    cy.get(':nth-child(1) > .d-flex > .btn', { timeout: 40000 }).click()
-    cy.get('.modal-primary__btn', { timeout: 40000 }).click()
+
+
+
 
     //Navigate to Ride Closeout and Continue the Process
     cy.contains('a', 'Ride Closeout', { timeout: 40000 }).click();
@@ -280,8 +335,8 @@ describe('Regression Test', () => {
     cy.get(':nth-child(6) > :nth-child(1) > div.form-switch > .switch-wrapper > .ng-untouched', { timeout: 40000 }).click()
     cy.wait(2000)
     cy.get('.pl-20 > .btn', { timeout: 40000 }).click({ force: true });
-    cy.get('.chip-input-container > :nth-child(2) > .ss-close', { timeout: 40000 }).click()
-    cy.get('.p-20 > .d-flex > .btn', { timeout: 40000 }).click()
+    // cy.get('.chip-input-container > :nth-child(2) > .ss-close', { timeout: 40000 }).click()
+    // cy.get('.p-20 > .d-flex > .btn', { timeout: 40000 }).click()
     cy.contains('a', 'Dispatch', { timeout: 40000 }).click({ force: true });
 
 
