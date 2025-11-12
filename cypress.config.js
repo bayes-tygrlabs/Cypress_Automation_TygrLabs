@@ -13,6 +13,7 @@ module.exports = defineConfig({
       html: false, // Generate HTML reports
       json: true, // Generate JSON reports
     },
+    headless: true,
     pageLoadTimeout: 120000, // <-- waits up to 2 minutes for page load
   },
 });

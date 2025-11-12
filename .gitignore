@@ -1,5 +1,5 @@
 node_modules
 cypress/screenshots
-cypress/reports/*.html
-cypress/reports/*.json
-cypress/reports/assets
+cypress/reports/html/
+cypress/reports/json/
+.vscode
