@@ -8,9 +8,9 @@ module.exports = defineConfig({
     specPattern: 'cypress/e2e/*.js',
     reporter: 'mochawesome', // Specify mochawesome as the reporter
     reporterOptions: {
-      reportDir: 'cypress/reports', // Directory for saving the reports
+      reportDir: 'cypress/reports/json', // Directory for saving the reports
       overwrite: false, // Avoid overwriting reports
-      html: true, // Generate HTML reports
+      html: false, // Generate HTML reports
       json: true, // Generate JSON reports
     },
     pageLoadTimeout: 120000, // <-- waits up to 2 minutes for page load

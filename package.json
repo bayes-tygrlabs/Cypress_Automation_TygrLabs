@@ -9,12 +9,11 @@
     "@faker-js/faker": "^9.5.0"
   },
   "scripts": {
-    "test": "npx cypress run",
+    "test": "rm -rf cypress/reports && npx cypress run --spec 'cypress/e2e/InternalBooking.js,cypress/e2e/RegressionScript.js,cypress/e2e/ResSync.js' --browser chrome && npx mochawesome-merge cypress/reports/json/*.json > cypress/reports/output.json && mkdir -p cypress/reports/html && npx marge cypress/reports/output.json -f CombinedReport -o cypress/reports/html --inline",
     "InternalBooking": "npx cypress run --spec 'E:/Automation-scripts-cypress/cypress/e2e/InternalBooking.js' --browser chrome",
     "Regression": "npx cypress run --spec 'cypress/e2e/RegressionScript.js' --browser chrome",
     "ResSync": "npx cypress run --spec 'E:/Automation-scripts-cypress/cypress/e2e/ResSync.js' --browser chrome",
-    "merge-reports": "npx mochawesome-merge cypress/reports/*.json > cypress/reports/output.json",
-    "generate-report": "npx marge cypress/reports/output.json --reportDir cypress/reports --inline",
-    "posttest": "npm run merge-reports && npm run generate-report"
+    "merge-reports": "npx mochawesome-merge cypress/reports/json/*.json > cypress/reports/output.json",
+    "generate-report": "npx marge cypress/reports/output.json -f CombinedReport -o cypress/reports/html --inline"
   }
 }

@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-11-12T08:46:41.706Z",
+    "end": "2025-11-12T08:47:41.876Z",
+    "duration": 60170,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "eb31cfd4-1977-430a-9755-0b4e90cc92fe",
+      "title": "",
+      "fullFile": "cypress/e2e/InternalBooking.js",
+      "file": "cypress/e2e/InternalBooking.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "b6f1d86e-1805-47d2-b275-7013ee8cc3a0",
+          "title": "Dispatch Test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should login successfully & quote a ride",
+              "fullTitle": "Dispatch Test should login successfully & quote a ride",
+              "timedOut": null,
+              "duration": 59083,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let iteration = 2; //Give index number from the example.json.data\ncy.visit('https://rc.synq7.com/');\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn').click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\ncy.wait(3000);\ncy.get('span.btn-text', {\n  timeout: 10000\n}).click({\n  force: true\n});\n//Filling Up Passenger Info\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', {\n  timeout: 40000\n}).should('be.enabled').click().type('Bayes RideCentric');\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > #basic-addon2', {\n  timeout: 40000\n}).should('be.visible').click();\n// Click the final button\ncy.get(':nth-child(1) > :nth-child(7) > .btn-success-main', {\n  timeout: 40000\n}).click();\n//Filling reservation details \ncy.get('.ngb-dp-today > .btn-light', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(5) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(11) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(2) > .time-zoon-link', {\n  timeout: 40000\n}).click();\ncy.get('.set-time-btn', {\n  timeout: 40000\n}).click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('3').click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('2').click();\ncy.fixture('example.json').then(data => {\n  // Get the current set of data based on iteration\n  const entry = data[iteration % data.length];\n  cy.get('#ReservationAddress0').type(entry.pickup_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress0').type('{downarrow}').type('{enter}');\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type(entry.dropoff_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type('{downarrow}').type('{enter}');\n  cy.wait(3000);\n  //Click on Show Vehicle Button\n  cy.get('.btn', {\n    timeout: 40000\n  }).should('be.enabled').click({\n    force: true\n  });\n  //Click on desired vehicle\n  cy.get('.vehicle-details', {\n    timeout: 40000\n  }).contains(new RegExp(`^${entry.vehicle}$`)).click();\n  // Increment the iteration count for the next run\n});\n//Confirm Ride Button\ncy.get(':nth-child(4) > .justify-content-between', {\n  timeout: 40000\n}).click();\n//Click on Reserve Button\ncy.get('.res_btn_group > :nth-child(2)', {\n  timeout: 40000\n}).click();\n// //Credit Card\n// cy.get('#PassengerCard', { timeout: 40000 })\n//   .should('be.visible')\n//   .select('25110001', { force: true });\n// cy.get('.bbtn', { timeout: 40000 }).click()\n//ACH\ncy.get('#PaymentMethod', {\n  timeout: 40000\n}).should('be.visible').select('AH', {\n  force: true\n}).should('have.value', 'AH');\ncy.get('button.bbtn.btn-small', {\n  timeout: 40000\n}).click();\n//Retrieving Reservation Number\ncy.get('h3.mt-20', {\n  timeout: 40000\n}).invoke('text').then(text => {\n  const reservationNumber = text.match(/\\d+/)[0];\n  cy.log('Reservation Number:', reservationNumber);\n  console.log('Reservation Number:', reservationNumber);\n  // Store reservationNumber as an alias to use later\n  cy.wrap(reservationNumber).as('reservationNumber');\n});\n// Click on Dispatch Button after reservation\ncy.get('.d-flex > [routerlink=\"/ride/dispatch/dashboard\"]', {\n  timeout: 60000\n}).should('be.visible').click({\n  force: true\n});\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Get the reservationNumber from reservation page and use it in the next commands\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  cy.get(':nth-child(2) > :nth-child(2) > .form-group > .form-control', {\n    timeout: 40000\n  }).type(reservationNumber);\n  cy.get('#ngb-typeahead-3-0', {\n    timeout: 40000\n  }).click();\n  cy.get('.btn', {\n    timeout: 40000\n  }).click();\n});\n//Filling and Editing Details in Reservation\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).dblclick();\ncy.get('[ngbtooltip=\"Edit/Change\"]', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Adding First Stop\ncy.get('.stop-add', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('#ReservationAddress', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Irving').wait(500).type('{downarrow}').type('{enter}');\ncy.get('.accordion-button', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('05');\ncy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Love Road');\ncy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('1111');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).click().type('7897897899');\ncy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Will wait here for 3 Mins');\ncy.get('.col-sm-12 > .btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('.mr-2', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Adding Second Stop\ncy.get('.stop-add', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('#ReservationAddress', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Las').wait(1000).type('{downarrow}').type('{enter}');\ncy.get('.accordion-button', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('6th');\ncy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Ring Road');\ncy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('5000');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('5656565656');\ncy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Not going to wait here for long');\ncy.get('.col-sm-12 > .btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Validating users cannot add more than two stops when its oneway\ncy.wait(1000);\ncy.get('.stop-add', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.modal-body > .text-center > p').should('contain.text', 'You can’t add more than two stops for \"OneWay\" ride. Please select \"By the Hour\". Do you want to change it?');\ncy.wait(500);\ncy.get('.modal-transparent__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.stop-add', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\n//Changing the ride type\ncy.get('#ByHour', {\n  timeout: 40000\n}).click();\ncy.get('#increment', {\n  timeout: 40000\n}).click();\ncy.get('#increment', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(6) > .d-flex > .btn', {\n  timeout: 40000\n}).click();\ncy.get('.mr-2', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\n//Adding Third Stop\ncy.get('.stop-add', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('#ReservationAddress', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Lamar Brown').wait(1000).type('{downarrow}').type('{enter}');\ncy.get('.accordion-button', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('Block A, Street 56');\ncy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('Bayes Road');\ncy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('3300');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).click().type('5656565656');\ncy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('will buy flowers');\ncy.get('.col-sm-12 > .btn', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\n//Special Instructions\ncy.get('.col-sm-12 > .edit > .ss-edit', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get(':nth-child(1) > :nth-child(1) > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).eq(0).click({\n  force: true\n}).type(\"This is chauffeur note\");\ncy.wait(500);\ncy.get(':nth-child(2) > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type(\"This is reservation/dispatch note\");\ncy.wait(500);\ncy.get(':nth-child(3) > .d-flex > .btn', {\n  timeout: 40000\n}).click();\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(1000);\n//Adding Additional Services\ncy.get('#ExtraSvcCode', {\n  timeout: 40000\n}).select('Baggage Claim $15.00');\ncy.get('.ss-rounded-plus', {\n  timeout: 40000\n}).click();\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.ss-remove', {\n  timeout: 40000\n}).eq(0).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('.mr-2', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('#ExtraSvcCode', {\n  timeout: 40000\n}).select('MISCELLANEOUS $20.00');\ncy.wait(500);\ncy.get('.ss-rounded-plus', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\n//Adding Additional Passenger\ncy.get('.ss-square-plus', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('tbody > :nth-child(1) > :nth-child(1) > .form-control', {\n  timeout: 40000\n}).type('Passenger');\ncy.wait(500);\ncy.get('tbody > :nth-child(1) > :nth-child(2) > .form-control', {\n  timeout: 40000\n}).type('One');\ncy.wait(500);\ncy.get('tbody > :nth-child(1) > :nth-child(3) > .form-control', {\n  timeout: 40000\n}).type('passengeradditional@hotmail.com');\ncy.wait(500);\ncy.get('.col-sm-12 > .d-flex > .btn', {\n  timeout: 40000\n}).click();\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\n//Sending Updated Confimation\ncy.get('.res_btn_group > .btn').click();",
+              "err": {},
+              "uuid": "3b9de821-5161-47a8-9c9c-b897a520cb70",
+              "parentUUID": "b6f1d86e-1805-47d2-b275-7013ee8cc3a0",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "3b9de821-5161-47a8-9c9c-b897a520cb70"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 59083,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports/json",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
