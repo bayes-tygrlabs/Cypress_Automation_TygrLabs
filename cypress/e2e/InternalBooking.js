@@ -4,6 +4,7 @@ describe('Dispatch Test', () => {
     let iteration = 2;  //Give index number from the example.json.data
 
     cy.visit('https://rc.synq7.com/');
+    
 
     // Login process
     cy.get('.input-container > .ng-pristine', { timeout: 40000 })

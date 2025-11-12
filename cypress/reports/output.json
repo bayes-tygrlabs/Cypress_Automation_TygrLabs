@@ -1,0 +1,301 @@
+{
+  "stats": {
+    "suites": 3,
+    "tests": 7,
+    "passes": 6,
+    "pending": 0,
+    "failures": 1,
+    "testsRegistered": 7,
+    "passPercent": 85.71428571428571,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false,
+    "start": "2025-11-12T11:57:20.719Z",
+    "end": "2025-11-12T12:02:17.664Z",
+    "duration": 296945
+  },
+  "results": [
+    {
+      "uuid": "d8357b6c-4c16-4e9f-b0dc-0ba0011aa076",
+      "title": "",
+      "fullFile": "cypress/e2e/InternalBooking.js",
+      "file": "cypress/e2e/InternalBooking.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d8cb36e6-5c85-4fc0-8ccf-412e341e0268",
+          "title": "Dispatch Test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should login successfully & quote a ride",
+              "fullTitle": "Dispatch Test should login successfully & quote a ride",
+              "timedOut": null,
+              "duration": 33748,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "let iteration = 2; //Give index number from the example.json.data\ncy.visit('https://rc.synq7.com/');\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn').click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\ncy.wait(3000);\ncy.get('span.btn-text', {\n  timeout: 10000\n}).click({\n  force: true\n});\n//Filling Up Passenger Info\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', {\n  timeout: 40000\n}).should('be.enabled').click().type('Bayes RideCentric');\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > #basic-addon2', {\n  timeout: 40000\n}).should('be.visible').click();\n// Click the final button\ncy.get(':nth-child(1) > :nth-child(7) > .btn-success-main', {\n  timeout: 40000\n}).click();\n//Filling reservation details \ncy.get('.ngb-dp-today > .btn-light', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(5) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(11) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(2) > .time-zoon-link', {\n  timeout: 40000\n}).click();\ncy.get('.set-time-btn', {\n  timeout: 40000\n}).click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('3').click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('2').click();\ncy.fixture('example.json').then(data => {\n  // Get the current set of data based on iteration\n  const entry = data[iteration % data.length];\n  cy.get('#ReservationAddress0').type(entry.pickup_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress0').type('{downarrow}').type('{enter}');\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type(entry.dropoff_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type('{downarrow}').type('{enter}');\n  cy.wait(3000);\n  //Click on Show Vehicle Button\n  cy.get('.btn', {\n    timeout: 40000\n  }).should('be.enabled').click({\n    force: true\n  });\n  //Click on desired vehicle\n  cy.get('.vehicle-details', {\n    timeout: 40000\n  }).contains(new RegExp(`^${entry.vehicle}$`)).click();\n  // Increment the iteration count for the next run\n});\n//Confirm Ride Button\ncy.get(':nth-child(4) > .justify-content-between', {\n  timeout: 40000\n}).click();\n//Click on Reserve Button\ncy.get('.res_btn_group > :nth-child(2)', {\n  timeout: 40000\n}).click();\n// //Credit Card\n// cy.get('#PassengerCard', { timeout: 40000 })\n//   .should('be.visible')\n//   .select('25110001', { force: true });\n// cy.get('.bbtn', { timeout: 40000 }).click()\n//ACH\ncy.get('#PaymentMethod', {\n  timeout: 40000\n}).should('be.visible').select('AH', {\n  force: true\n}).should('have.value', 'AH');\ncy.get('button.bbtn.btn-small', {\n  timeout: 40000\n}).click();\n//Retrieving Reservation Number\ncy.get('h3.mt-20', {\n  timeout: 40000\n}).invoke('text').then(text => {\n  const reservationNumber = text.match(/\\d+/)[0];\n  cy.log('Reservation Number:', reservationNumber);\n  console.log('Reservation Number:', reservationNumber);\n  // Store reservationNumber as an alias to use later\n  cy.wrap(reservationNumber).as('reservationNumber');\n});\n// Click on Dispatch Button after reservation\ncy.get('.d-flex > [routerlink=\"/ride/dispatch/dashboard\"]', {\n  timeout: 60000\n}).should('be.visible').click({\n  force: true\n});\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Get the reservationNumber from reservation page and use it in the next commands\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  cy.get(':nth-child(2) > :nth-child(2) > .form-group > .form-control', {\n    timeout: 40000\n  }).type(reservationNumber);\n  cy.get('#ngb-typeahead-3-0', {\n    timeout: 40000\n  }).click();\n  cy.get('.btn', {\n    timeout: 40000\n  }).click();\n});\n//Filling and Editing Details in Reservation\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).dblclick();\ncy.get('[ngbtooltip=\"Edit/Change\"]', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Adding First Stop\ncy.get('.stop-add', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('#ReservationAddress', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Irving').wait(500).type('{downarrow}').type('{enter}');\ncy.get('.accordion-button', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('05');\ncy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Love Road');\ncy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('1111');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).click().type('7897897899');\ncy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Will wait here for 3 Mins');\ncy.get('.col-sm-12 > .btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('.mr-2', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Adding Second Stop\ncy.get('.stop-add', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('#ReservationAddress', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Las').wait(1000).type('{downarrow}').type('{enter}');\ncy.get('.accordion-button', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('6th');\ncy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Ring Road');\ncy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('5000');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('5656565656');\ncy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Not going to wait here for long');\ncy.get('.col-sm-12 > .btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Validating users cannot add more than two stops when its oneway\ncy.wait(1000);\ncy.get('.stop-add', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.modal-body > .text-center > p').should('contain.text', 'You can’t add more than two stops for \"OneWay\" ride. Please select \"By the Hour\". Do you want to change it?');\ncy.wait(500);\ncy.get('.modal-transparent__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.stop-add', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\n//Changing the ride type\ncy.get('#ByHour', {\n  timeout: 40000\n}).click();\ncy.get('#increment', {\n  timeout: 40000\n}).click();\ncy.get('#increment', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(6) > .d-flex > .btn', {\n  timeout: 40000\n}).click();\ncy.get('.mr-2', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\n//Adding Third Stop\ncy.get('.stop-add', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('#ReservationAddress', {\n  timeout: 40000\n}).click({\n  force: true\n}).type('Lamar Brown').wait(1000).type('{downarrow}').type('{enter}');\ncy.get('.accordion-button', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('Block A, Street 56');\ncy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('Bayes Road');\ncy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('3300');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).click().type('5656565656');\ncy.get('.row.mt-20 > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click().type('will buy flowers');\ncy.get('.col-sm-12 > .btn', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\n//Special Instructions\ncy.get('.col-sm-12 > .edit > .ss-edit', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get(':nth-child(1) > :nth-child(1) > .col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).eq(0).click({\n  force: true\n}).type(\"This is chauffeur note\");\n// cy.wait(500)\n// cy.get(':nth-child(2) > .col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type(\"This is reservation/dispatch note\")\n// cy.wait(500)\n// cy.get(':nth-child(3) > .d-flex > .btn', { timeout: 40000 }).click()\n// cy.get('.modal-primary__btn', { timeout: 40000 }).click()\n// cy.wait(1000)\n//Adding Additional Services\ncy.get('#ExtraSvcCode', {\n  timeout: 40000\n}).select('Baggage Claim $15.00');\ncy.get('.ss-rounded-plus', {\n  timeout: 40000\n}).click();\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.ss-remove', {\n  timeout: 40000\n}).eq(0).click({\n  force: true\n});\ncy.wait(1000);\ncy.get('.mr-2', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.wait(500);\ncy.get('#ExtraSvcCode', {\n  timeout: 40000\n}).select('MISCELLANEOUS $20.00');\ncy.wait(500);\ncy.get('.ss-rounded-plus', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.wait(500);\n//Adding Additional Passenger\ncy.get('.ss-square-plus', {\n  timeout: 40000\n}).click();\ncy.wait(500);\ncy.get('tbody > :nth-child(1) > :nth-child(1) > .form-control', {\n  timeout: 40000\n}).type('Passenger');\ncy.wait(500);\ncy.get('tbody > :nth-child(1) > :nth-child(2) > .form-control', {\n  timeout: 40000\n}).type('One');\ncy.wait(500);\ncy.get('tbody > :nth-child(1) > :nth-child(3) > .form-control', {\n  timeout: 40000\n}).type('passengeradditional@hotmail.com');\ncy.wait(500);\ncy.get('.col-sm-12 > .d-flex > .btn', {\n  timeout: 40000\n}).click();\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\n//Sending Updated Confimation\ncy.get('.res_btn_group > .btn').click();",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4000ms: `cy.type()` failed because the page updated while this command was executing. Cypress tried to locate elements based on this query:\n\n> <input#ReservationAddress.form-control.ng-valid.pac-target-input.ng-dirty.ng-touched>\n\nWe initially found matching element(s), but while waiting for them to become actionable, they disappeared from the page. Common situations why this happens:\n  - Your JS framework re-rendered asynchronously\n  - Your app code reacted to an event firing and removed the element\n\nYou can typically solve this by breaking up a chain. For example, rewrite:\n\n> `cy.get('button').click().click()`\n\nto\n\n> `cy.get('button').as('btn').click()`\n> `cy.get('@btn').click()`\n\nhttps://on.cypress.io/element-has-detached-from-dom",
+                "estack": "CypressError: Timed out retrying after 4000ms: `cy.type()` failed because the page updated while this command was executing. Cypress tried to locate elements based on this query:\n\n> <input#ReservationAddress.form-control.ng-valid.pac-target-input.ng-dirty.ng-touched>\n\nWe initially found matching element(s), but while waiting for them to become actionable, they disappeared from the page. Common situations why this happens:\n  - Your JS framework re-rendered asynchronously\n  - Your app code reacted to an event firing and removed the element\n\nYou can typically solve this by breaking up a chain. For example, rewrite:\n\n> `cy.get('button').click().click()`\n\nto\n\n> `cy.get('button').as('btn').click()`\n> `cy.get('@btn').click()`\n\nhttps://on.cypress.io/element-has-detached-from-dom\n    at retryActionability (https://rc.synq7.com/__cypress/runner/cypress_runner.js:115134:74)\n    at tryCatcher (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://rc.synq7.com/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (https://rc.synq7.com/__cypress/runner/cypress_runner.js:151356:68)\n    at <unknown> (https://rc.synq7.com/__cypress/runner/cypress_runner.js:151297:14)\n    at tryCatcher (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (https://rc.synq7.com/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (https://rc.synq7.com/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at Object.proxyGetter [as get] (https://rc.synq7.com/__cypress/runner/cypress_runner.js:80741:22)\n    at exists (https://rc.synq7.com/__cypress/runner/cypress_runner.js:150544:26)\n    at elExists (https://rc.synq7.com/__cypress/runner/cypress_runner.js:150559:10)\n    at ensureExistence (https://rc.synq7.com/__cypress/runner/cypress_runner.js:150740:22)\n    at onFailFn (https://rc.synq7.com/__cypress/runner/cypress_runner.js:150769:53)",
+                "diff": null
+              },
+              "uuid": "7bf64246-f287-4322-91c1-eaecfc78906f",
+              "parentUUID": "d8cb36e6-5c85-4fc0-8ccf-412e341e0268",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "7bf64246-f287-4322-91c1-eaecfc78906f"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 33748,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "67e323ea-c9ed-4d43-9596-05872db3b18a",
+      "title": "",
+      "fullFile": "cypress/e2e/RegressionScript.js",
+      "file": "cypress/e2e/RegressionScript.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "b01fd48c-9d2d-4b21-a387-7cd9c04449ff",
+          "title": "Regression Test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should complete the entire ride booking workflow including login, passenger info, reservation, dispatch, sending emails and status updates",
+              "fullTitle": "Regression Test should complete the entire ride booking workflow including login, passenger info, reservation, dispatch, sending emails and status updates",
+              "timedOut": null,
+              "duration": 103749,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let iteration = 0; //Give index number from the example.json.data\ncy.visit('https://rc.synq7.com/');\n//Reservation Creation\\\\\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn').click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\ncy.wait(2000);\ncy.wait(3000);\ncy.get('span.btn-text', {\n  timeout: 10000\n}).click({\n  force: true\n});\n//Filling Up Passenger Info\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', {\n  timeout: 40000\n}).should('be.enabled').click().type('Bayes RideCentric');\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > #basic-addon2', {\n  timeout: 40000\n}).should('be.visible').click();\n// Click the final button\ncy.get(':nth-child(1) > :nth-child(7) > .btn-success-main', {\n  timeout: 40000\n}).click();\n//Filling reservation details \ncy.get('.ngb-dp-today > .btn-light', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(5) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(11) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(2) > .time-zoon-link', {\n  timeout: 40000\n}).click();\ncy.get('.set-time-btn', {\n  timeout: 40000\n}).click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('3').click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('2').click();\ncy.fixture('example.json').then(data => {\n  // Get the current set of data based on iteration\n  const entry = data[iteration % data.length];\n  cy.get('#ReservationAddress0').type(entry.pickup_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress0').type('{downarrow}').type('{enter}');\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type(entry.dropoff_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type('{downarrow}').type('{enter}');\n  cy.wait(3000);\n  //Click on Show Vehicle Button\n  cy.get('.btn', {\n    timeout: 40000\n  }).should('be.enabled').click({\n    force: true\n  });\n  //Click on desired vehicle\n  cy.get('.vehicle-details', {\n    timeout: 40000\n  }).contains(new RegExp(`^${entry.vehicle}$`)).click();\n});\n//Confirm Ride Button\ncy.get(':nth-child(4) > .justify-content-between', {\n  timeout: 40000\n}).click();\n//Click on Reserve Button\ncy.get('.res_btn_group > :nth-child(2)', {\n  timeout: 40000\n}).click();\n//ACH\ncy.get('#PaymentMethod', {\n  timeout: 40000\n}).should('be.visible').select('AH', {\n  force: true\n}).should('have.value', 'AH');\ncy.get('button.bbtn.btn-small', {\n  timeout: 40000\n}).click();\n// //Credit Card\n// cy.get('#PassengerCard', { timeout: 40000 })\n// .should('be.visible')\n// .select('25110001', { force: true });\n// cy.get('.bbtn', { timeout: 40000 }).click()\n//Retrieving Reservation Number\ncy.get('h3.mt-20', {\n  timeout: 40000\n}).invoke('text').then(text => {\n  const reservationNumber = text.match(/\\d+/)[0];\n  cy.log('Reservation Number:', reservationNumber);\n  console.log('Reservation Number:', reservationNumber);\n  // Store reservationNumber as an alias to use later\n  cy.wrap(reservationNumber).as('reservationNumber');\n});\n// Click on Dispatch Button after reservation\ncy.get('.d-flex > [routerlink=\"/ride/dispatch/dashboard\"]', {\n  timeout: 60000\n}).should('be.visible').click({\n  force: true\n});\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Get the reservationNumber from reservation page and use it in the next commands\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  cy.get(':nth-child(2) > :nth-child(2) > .form-group > .form-control', {\n    timeout: 40000\n  }).type(reservationNumber);\n  cy.get('#ngb-typeahead-3-0', {\n    timeout: 40000\n  }).click();\n  cy.get('.btn', {\n    timeout: 40000\n  }).click();\n});\n//Functionalities Check After Booking Reservations\\\\\ncy.wait(5000);\n//Accept Ride\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.wait(2000);\ncy.contains('Accept Ride', {\n  timeout: 40000\n}).click();\ncy.contains('Are you sure, you want to accept 1 ride?', {\n  timeout: 40000\n}).should('be.visible');\ncy.contains('Yes', {\n  timeout: 40000\n}).click();\n//Assign | Dispatch\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.contains('Assign | Dispatch', {\n  timeout: 40000\n}).click();\n//Assign Affiliate\ncy.get('.pl-20 > .form-group > .ng-select-searchable > .ng-select-container > .ng-value-container > .ng-input > input', {\n  timeout: 40000\n}).click(); // Click to open the dropdown\ncy.wait(2000);\ncy.get('.ng-dropdown-panel .ng-option', {\n  timeout: 40000\n}) // Wait for dropdown options\n.first() // Select the first option\n.click();\ncy.wait(2000);\n//Assign Chauffeur\ncy.get('.dis_grid > .form-group > .ng-select-searchable > .ng-select-container > .ng-arrow-wrapper', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\ncy.get('.ng-dropdown-panel .ng-option', {\n  timeout: 40000\n}) // Wait for dropdown options\n.first() // Select the first option\n.click();\n//Click on Dispatch Button\ncy.get('container-element > .d-flex > :nth-child(2)', {\n  timeout: 40000\n}).click();\n//Confirm sending email to affiliate\ncy.get('.modal-transparent__btn', {\n  timeout: 40000\n}).click();\n//Send Chauffeur Link\ncy.wait(3000);\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.contains('Send Chauffeur Link', {\n  timeout: 40000\n}).click();\n//Inputting country code and number\ncy.get('.CountryOptionItem', {\n  timeout: 40000\n}).click();\ncy.get('.select2-search__field', {\n  timeout: 40000\n}).type('Bangladesh').type('{enter}');\ncy.get('.CountryNumberInput', {\n  timeout: 40000\n}).clear().type('01744820559');\n//If an email already exists, clear it out. If not, just skip this step\ncy.get('body').then($body => {\n  // Check if the element exists in the body\n  if ($body.find('.chip > .ss-close').length > 0) {\n    // If the element exists\n    cy.get('.chip > .ss-close').click(); // Click the element\n  }\n});\n// Inputting Email Address\ncy.get('#receiverEmailId', {\n  timeout: 40000\n}).clear().type('bayesridecentric@gmail.com');\ncy.get('.btn', {\n  timeout: 40000\n}).click();\ncy.wait(3000);\ncy.log('Chauffeur Link Has Been Sent');\n//Click on the reservation\ncy.wait(2000);\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\n//Taking mouse hover to mail section\ncy.get('[ngbtooltip=\"Send Mail/SMS\"]', {\n  timeout: 40000\n}).trigger('mouseenter'); // Move the cursor to the element\n// Pax Ride Confirmation\ncy.contains('a', 'Pax Ride Confirmation', {\n  timeout: 40000\n}).click({\n  force: true\n}); // Force click even if not visible\ncy.get('select[formcontrolname=\"MailFormat\"]').select('HTML-PDF');\ncy.get('form.ng-untouched.ng-valid > :nth-child(1) > :nth-child(2) > .tile > .p-20 > .d-flex > .btn-medium', {\n  timeout: 40000\n}).click();\n// Affiliate Ride Order\ncy.contains('a', 'Affiliate Ride Order', {\n  timeout: 40000\n}).click({\n  force: true\n}); // Force click even if not visible\n// Get the email input field\nconst emailInput = cy.get('#receiverEmailId');\n// Check if the chip (existing email) exists\n// cy.get('.chip-input-container').find('.chip').then(($chips) => {\n//   if ($chips.length > 0) {\n//     // If the chip exists, click on the close icon to remove the email\n//     cy.get('.chip-input-container > :nth-child(1) > .ss-close').click();\n//   }\n//   // Now type the new email in the input field\ncy.get('#receiverEmailId').type('bayesridecentric@gmail.com');\n// });\n// cy.get('.chip-input-container').find('.chip').then(($chips) => {\n//   if ($chips.length > 0) {\n//     // If the chip exists, click on the close icon to remove the email\n//     cy.get('.chip-input-container > :nth-child(1) > .ss-close').click({ force: true });\n//   } else {\n//     // If no chip exists, type the new email directly\n//     cy.get('#receiverEmailId').type('bayesridecentric@gmail.com', { force: true });\n//   }\n// });\ncy.wait(3000);\ncy.get('.btn-medium', {\n  timeout: 40000\n}).click();\ncy.log('Affiliate Ride Order Email Has Been Sent');\n// //Status Change\nfunction waitForLoaderToDisappear() {\n  cy.get('.spinner', {\n    timeout: 60000\n  }).should('not.exist');\n  cy.get('#divpreloader.preloader.show', {\n    timeout: 60000\n  }).should('not.exist');\n  // Retry mechanism in case the loader reappears after some time\n  cy.wait(500); // Buffer time\n  cy.get('body').then($body => {\n    if ($body.find('#divpreloader.preloader.show').length > 0) {\n      cy.get('#divpreloader.preloader.show', {\n        timeout: 60000\n      }).should('not.exist');\n    }\n  });\n}\n// Function to safely update status\nfunction updateStatus(statusSelector) {\n  waitForLoaderToDisappear(); // Ensure the page is stable\n  cy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n    timeout: 50000\n  }).should('be.visible').should('not.be.disabled').as('statusCell');\n  cy.get('@statusCell').click();\n  cy.wait(500); // Allow UI to update\n  cy.get('@statusCell').rightclick();\n  cy.contains('Status Update', {\n    timeout: 50000\n  }).click();\n  cy.get(statusSelector, {\n    timeout: 50000\n  }).click();\n  waitForLoaderToDisappear(); // Ensure the UI is fully ready before next action\n}\n// Status Change Sequence\nupdateStatus(':nth-child(3) > .res-stat-btn > .text'); // Ride Accepted\nupdateStatus(':nth-child(5) > .res-stat-btn > .text'); // Enroute\nupdateStatus(':nth-child(7) > .res-stat-btn > .text'); // On-site\nupdateStatus(':nth-child(9) > .res-stat-btn > .text'); // On-Board\nupdateStatus(':nth-child(11) > .res-stat-btn > .text'); // Complete\n// //Navigate to settings and Click on Archive Res\n// cy.get('.ss-settings', { timeout: 50000 }).click()\n// cy.contains('a', 'Archive Res', { timeout: 50000 }).click();\n// cy.get('form.ng-untouched > :nth-child(1) > :nth-child(2) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click()\n// cy.get('select[title=\"Select year\"]', { timeout: 40000 }).select('2027');\n// cy.contains('div.btn-light', '25', { timeout: 40000 }).click();\n// cy.get('@reservationNumber', { timeout: 10000 }).then((reservationNumber) => {\n//   cy.get(':nth-child(3) > .form-group > .form-control', { timeout: 10000 }).click().type(reservationNumber);\n//   cy.get('.row.align-items-center > .d-flex > .btn', { timeout: 10000 }).click();\n// });\n// cy.wait(5000);\n// cy.get('tbody > tr > :nth-child(1)', { timeout: 40000 }).click()\n// cy.wait(5000);\n// cy.get(':nth-child(1) > .d-flex > .btn', { timeout: 40000 }).click()\n// cy.wait(5000);\n// cy.get('.modal-primary__btn', { timeout: 40000 }).click()\n// cy.wait(10000);\n//Archive the ride using API calls\ncy.get('@reservationNumber').then(reservationNumber => {\n  cy.request({\n    method: 'POST',\n    url: 'https://rc.synq7.com/api/archive/saveresarchive',\n    headers: {\n      'Content-Type': 'application/json',\n      'Authorization': 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkJheWVzIiwiUm9sZUlkIjoiMSIsIlVzZXJSb2xlSWQiOiIxIiwiVXNlclR5cGUiOiJTQSIsIlVzZXJJZCI6IkJBWUVTIiwiU3ViRG9tYWluIjoicmMiLCJIb3N0IjoiaHR0cHM6Ly9yYy5zeW5xNy5jb20iLCJTY2hlbWUiOiJodHRwczovLyIsIk15Q2l0eSI6IkRoYWthIiwiTXlPZmZzZXQiOiIyMTYwMCIsIlRoZW1lQ29sb3IiOiIjMDA4MDAwIiwiQ29tQ29kZSI6IlJDMDAxIiwiSWQiOiJkZjg2NmYyZC0zYWIxLTQ2Y2ItOGFjZi1hY2Q5YTI0YTU5OGUiLCJEZXZpY2VJZCI6IjJmNzhiZmE2OTUyZjRmMzBiNTAwZDRhYjViMDU1OWE4IiwiVXNlclByaXZpbGVnZSI6IlNVUCIsIkFjY291bnRDb2RlIjoiIiwibmJmIjoxNzYyMzIzODIwLCJleHAiOjE3NjMxODc4MjAsImlzcyI6ImF6aXp1ckByZWRsaW1lc29sdXRpb25zLmNvbSIsImF1ZCI6ImF6aXp1ckByZWRsaW1lc29sdXRpb25zLmNvbSJ9.5uROSU2H8tqol3jd-FL-jWXKtVlCeAkiAZa4SVre_Vw'\n    },\n    body: {\n      GoFor: \"CUR\",\n      StartDate: \"\",\n      EndDate: \"2027-11-05\",\n      SearchText: `{\"ReservationId\":\"${reservationNumber}\",\"Account\":null,\"Passenger\":null}`\n    },\n    failOnStatusCode: false\n  }).then(response => {\n    cy.log('API Response:', JSON.stringify(response.body));\n    // ✅ Assertions\n    expect(response.status).to.eq(200);\n    expect(response.body).to.have.property('Msg', 'Ride archived successfully!!');\n    expect(response.body).to.have.property('Success', 'Y');\n    expect(response.body).to.have.property('Data', '');\n  });\n});\n//Navigate to Ride Closeout and Continue the Process\ncy.contains('a', 'Ride Closeout', {\n  timeout: 40000\n}).click();\ncy.get('.ss-download', {\n  timeout: 40000\n}).click();\ncy.get('.col-12 > .btn', {\n  timeout: 40000\n}).click();\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  // cy.get('input[placeholder=\"res, pax, account\"]', { timeout: 40000 }).click().type(reservationNumber).type('{enter}');\n  cy.get('input[placeholder=\"res, pax, account\"]', {\n    timeout: 40000\n  }).click().type(reservationNumber, {\n    delay: 500\n  }) // Adjust delay as needed\n  .type('{enter}');\n  cy.wait(3000);\n});\ncy.get('.tabulator-row > [tabulator-field=\"ResNoLive\"]', {\n  timeout: 40000\n}).dblclick();\n//Billing Info (Cost Finalizing and Save)\ncy.get(':nth-child(6) > :nth-child(1) > div.form-switch > .switch-wrapper > .ng-untouched', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\ncy.get('.pl-20 > .btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\n// cy.get('.chip-input-container > :nth-child(2) > .ss-close', { timeout: 40000 }).click()\n// cy.get('.p-20 > .d-flex > .btn', { timeout: 40000 }).click()\ncy.contains('a', 'Dispatch', {\n  timeout: 40000\n}).click({\n  force: true\n});",
+              "err": {},
+              "uuid": "180c6402-79f6-4712-bf8d-38a1e3895810",
+              "parentUUID": "b01fd48c-9d2d-4b21-a387-7cd9c04449ff",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "180c6402-79f6-4712-bf8d-38a1e3895810"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 103749,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "6064186a-a77d-4c10-858a-e5a827044dcd",
+      "title": "",
+      "fullFile": "cypress/e2e/ResSync.js",
+      "file": "cypress/e2e/ResSync.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "7b77ad05-1b60-471f-891e-bdaac5a0961e",
+          "title": "Res Sync Flow Automation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should create a reservation, generate a link, set the event name, update the due date, apply discounts, generate the final link, copy it, extract OTP and store OTP",
+              "fullTitle": "Res Sync Flow Automation should create a reservation, generate a link, set the event name, update the due date, apply discounts, generate the final link, copy it, extract OTP and store OTP",
+              "timedOut": null,
+              "duration": 52291,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let iteration = 2; //Give index number from the example.json.data\ncy.visit('https://rc.synq7.com/');\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\ncy.wait(3000);\n// Navigate to ride booking page\ncy.wait(3000);\ncy.get('span.btn-text', {\n  timeout: 10000\n}).click({\n  force: true\n});\n//Filling Up Passenger Info\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', {\n  timeout: 40000\n}).should('be.enabled').click().type('Bayes RideCentric');\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > #basic-addon2', {\n  timeout: 40000\n}).should('be.visible').click();\n// Click the final button\ncy.get(':nth-child(1) > :nth-child(7) > .btn-success-main', {\n  timeout: 40000\n}).click();\n//Filling reservation details \ncy.get('.ngb-dp-today > .btn-light', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(5) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(11) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(2) > .time-zoon-link', {\n  timeout: 40000\n}).click();\ncy.get('.set-time-btn', {\n  timeout: 40000\n}).click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('3').click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('2').click();\ncy.fixture('example.json').then(data => {\n  // Get the current set of data based on iteration\n  const entry = data[iteration % data.length];\n  cy.get('#ReservationAddress0').type(entry.pickup_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress0').type('{downarrow}').type('{enter}');\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type(entry.dropoff_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type('{downarrow}').type('{enter}');\n  cy.wait(3000);\n  //Click on Show Vehicle Button\n  cy.get('.btn', {\n    timeout: 40000\n  }).should('be.enabled').click({\n    force: true\n  });\n  //Click on desired vehicle\n  cy.get('.vehicle-details', {\n    timeout: 40000\n  }).contains(new RegExp(`^${entry.vehicle}$`)).click();\n  // Increment the iteration count for the next run\n});\n//Confirm Ride Button\ncy.get(':nth-child(4) > .justify-content-between', {\n  timeout: 40000\n}).click();\n//Click on Reserve Button\ncy.get('.res_btn_group > :nth-child(2)', {\n  timeout: 40000\n}).click();\n// //Credit Card\n// cy.get('#PassengerCard', { timeout: 40000 })\n//   .should('be.visible')\n//   .select('25110001', { force: true });\n// cy.get('.bbtn', { timeout: 40000 }).click()\n//ACH\ncy.get('#PaymentMethod', {\n  timeout: 40000\n}).should('be.visible').select('AH', {\n  force: true\n}).should('have.value', 'AH');\ncy.get('button.bbtn.btn-small', {\n  timeout: 40000\n}).click();\n//Retrieving Reservation Number\ncy.get('h3.mt-20', {\n  timeout: 40000\n}).invoke('text').then(text => {\n  const reservationNumber = text.match(/\\d+/)[0];\n  reservationNumbers.push(reservationNumber);\n  cy.log('Reservation Number:', reservationNumber);\n  console.log('Reservation Number:', reservationNumber);\n  // Store reservationNumber as an alias to use later\n  cy.wrap(reservationNumber).as('reservationNumber');\n});\n// Click on Dispatch Button after reservation\ncy.get('.d-flex > [routerlink=\"/ride/dispatch/dashboard\"]', {\n  timeout: 60000\n}).should('be.visible').click({\n  force: true\n});\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Get the reservationNumber from reservation page and use it in the next commands\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  cy.get(':nth-child(2) > :nth-child(2) > .form-group > .form-control', {\n    timeout: 40000\n  }).type(reservationNumber);\n  cy.get('#ngb-typeahead-3-0', {\n    timeout: 40000\n  }).click();\n  cy.get('.btn', {\n    timeout: 40000\n  }).click();\n});\ncy.wait(5000);\n//Accept Ride\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.wait(2000);\ncy.contains('Accept Ride', {\n  timeout: 40000\n}).click();\ncy.contains('Are you sure, you want to accept 1 ride?', {\n  timeout: 40000\n}).should('be.visible');\ncy.contains('Yes', {\n  timeout: 40000\n}).click();\n//Assign | Dispatch\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.contains('Assign | Dispatch', {\n  timeout: 40000\n}).click();\n//Assign Affiliate\ncy.get('.pl-20 > .form-group > .ng-select-searchable > .ng-select-container > .ng-value-container > .ng-input > input', {\n  timeout: 40000\n}).click(); // Click to open the dropdown\ncy.wait(2000);\ncy.get('.ng-dropdown-panel .ng-option', {\n  timeout: 40000\n}) // Wait for dropdown options\n.first() // Select the first option\n.click();\ncy.wait(2000);\n//Assign Chauffeur\ncy.get('.dis_grid > .form-group > .ng-select-searchable > .ng-select-container > .ng-arrow-wrapper', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\ncy.get('.ng-dropdown-panel .ng-option', {\n  timeout: 40000\n}) // Wait for dropdown options\n.first() // Select the first option\n.click();\n//Click on Dispatch Button\ncy.get('container-element > .d-flex > :nth-child(2)', {\n  timeout: 40000\n}).click();\n//Confirm sending email to affiliate\ncy.get('.modal-transparent__btn', {\n  timeout: 40000\n}).click();\n//right click and go to reservation sync\ncy.wait(3000);\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.contains('Reservation Sync', {\n  timeout: 40000\n}).click();\ncy.contains('Generate Link', {\n  timeout: 40000\n}).click();\n//Updating event name\nconst eventName = _faker.faker.string.numeric(8);\nEventname = eventName;\n// Click on the edit icon to reveal the input field\ncy.get('.ss-edit.ss-edit-pro', {\n  timeout: 40000\n}).click();\n// Wait for the input field to appear, and then clear and type the event name\ncy.get('input[maxlength=\"20\"]', {\n  timeout: 40000\n}).should('be.visible').clear().type(eventName);\nconsole.log(eventName);\ncy.log(eventName);\n// //Update due date\n// cy.get('span[role=\"button\"] > i.ss-lock.lock', { timeout: 40000 })\n//   .eq(0) // Change index based on which element you need\n//   .click({ force: true });\n// cy.get('.modal-primary__btn', { timeout: 40000 }).click()\n// cy.get('.col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click().type(789789)\n// cy.contains('button', 'Save').click();\n// cy.get('.d-flex.small > [ngbdatepicker=\"\"]', { timeout: 40000 }).click()\n// cy.get('.right', { timeout: 40000 }).click()\n// cy.get('.ngb-dp-day').contains('28').click();\n//Applying Discounts\ncy.get(':nth-child(3) > :nth-child(1) > .card > .mb-3 > [role=\"button\"] > .ss-lock').click();\ncy.get('.modal-primary__btn').click();\ncy.get('.col-sm-12 > .form-group > .form-control', {\n  timeout: 40000\n}).click().type(789789);\ncy.contains('button', 'Save', {\n  timeout: 40000\n}).click();\ncy.wait(6000);\ncy.get(':nth-child(2) > .card > .row > :nth-child(2) > .d-flex > .input-group > .form-control', {\n  timeout: 40000\n}).click().type('10');\ncy.contains('button', 'Generate Link').click();\n//Storing the Link in global variable\ncy.get('.text-success').invoke('text').then(text => {\n  generateLink = text; // Store the text in the global variable\n  cy.log('Generated Link: ' + generateLink); // Log it for reference\n});\n//Storing OTP in the global variable\ncy.get('p[style=\"color: #000; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 64px; font-style: normal; font-weight: 400; line-height: 64px;\"]').invoke('text').then(text => {\n  otp = text.trim().substring(0, 4); // Store OTP value in a variable\n  cy.log('OTP: ' + otp); // Log OTP for reference\n});",
+              "err": {},
+              "uuid": "44713d74-ee3a-47a5-9025-22f142707b93",
+              "parentUUID": "7b77ad05-1b60-471f-891e-bdaac5a0961e",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should create multiple reservations and add them to event",
+              "fullTitle": "Res Sync Flow Automation should create multiple reservations and add them to event",
+              "timedOut": null,
+              "duration": 35853,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let iteration = 2; //Give index number from the example.json.data\ncy.visit('https://rc.synq7.com/');\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\ncy.wait(3000);\n// Navigate to ride booking page\ncy.wait(3000);\ncy.get('span.btn-text', {\n  timeout: 10000\n}).click({\n  force: true\n});\n//Filling Up Passenger Info\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', {\n  timeout: 40000\n}).should('be.enabled').click().type('Bayes RideCentric');\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > #basic-addon2', {\n  timeout: 40000\n}).should('be.visible').click();\n// Click the final button\ncy.get(':nth-child(1) > :nth-child(7) > .btn-success-main', {\n  timeout: 40000\n}).click();\n//Filling reservation details \ncy.get('.ngb-dp-today > .btn-light', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(5) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(11) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(2) > .time-zoon-link', {\n  timeout: 40000\n}).click();\ncy.get('.set-time-btn', {\n  timeout: 40000\n}).click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('3').click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('2').click();\ncy.fixture('example.json').then(data => {\n  // Get the current set of data based on iteration\n  const entry = data[iteration % data.length];\n  cy.get('#ReservationAddress0').type(entry.pickup_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress0').type('{downarrow}').type('{enter}');\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type(entry.dropoff_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type('{downarrow}').type('{enter}');\n  cy.wait(3000);\n  //Click on Show Vehicle Button\n  cy.get('.btn', {\n    timeout: 40000\n  }).should('be.enabled').click({\n    force: true\n  });\n  //Click on desired vehicle\n  cy.get('.vehicle-details', {\n    timeout: 40000\n  }).contains(new RegExp(`^${entry.vehicle}$`)).click();\n  // Increment the iteration count for the next run\n});\n//Confirm Ride Button\ncy.get(':nth-child(4) > .justify-content-between', {\n  timeout: 40000\n}).click();\n//Click on Reserve Button\ncy.get('.res_btn_group > :nth-child(2)', {\n  timeout: 40000\n}).click();\n// //Credit Card\n// cy.get('#PassengerCard', { timeout: 40000 })\n//   .should('be.visible')\n//   .select('25110001', { force: true });\n// cy.get('.bbtn', { timeout: 40000 }).click()\n//ACH\ncy.get('#PaymentMethod', {\n  timeout: 40000\n}).should('be.visible').select('AH', {\n  force: true\n}).should('have.value', 'AH');\ncy.get('button.bbtn.btn-small', {\n  timeout: 40000\n}).click();\n//Retrieving Reservation Number\ncy.get('h3.mt-20', {\n  timeout: 40000\n}).invoke('text').then(text => {\n  const reservationNumber = text.match(/\\d+/)[0];\n  reservationNumbers.push(reservationNumber);\n  cy.log('Reservation Number:', reservationNumber);\n  console.log('Reservation Number:', reservationNumber);\n  // Store reservationNumber as an alias to use later\n  cy.wrap(reservationNumber).as('reservationNumber');\n});\n// Click on Dispatch Button after reservation\ncy.get('.d-flex > [routerlink=\"/ride/dispatch/dashboard\"]', {\n  timeout: 60000\n}).should('be.visible').click({\n  force: true\n});\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Get the reservationNumber from reservation page and use it in the next commands\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  cy.get(':nth-child(2) > :nth-child(2) > .form-group > .form-control', {\n    timeout: 40000\n  }).type(reservationNumber);\n  cy.get('#ngb-typeahead-3-0', {\n    timeout: 40000\n  }).click();\n  cy.get('.btn', {\n    timeout: 40000\n  }).click();\n  cy.wait(3000);\n});\n//Add to event\ncy.wait(3000);\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.wait(2000);\ncy.contains('Reservation Sync', {\n  timeout: 40000\n}).click();\ncy.contains('Add to Event', {\n  timeout: 40000\n}).click();\n// Select the event \ncy.wait(3000);\ncy.get('#EventCode', {\n  timeout: 40000\n}).select(Eventname, {\n  force: true\n}).should('have.value', Eventname);\ncy.wait(1000);\ncy.get('.btn', {\n  timeout: 40000\n}).click();",
+              "err": {},
+              "uuid": "a92ede01-b436-4c10-a991-4305e17767e8",
+              "parentUUID": "7b77ad05-1b60-471f-891e-bdaac5a0961e",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should create multiple reservations and add them to event",
+              "fullTitle": "Res Sync Flow Automation should create multiple reservations and add them to event",
+              "timedOut": null,
+              "duration": 36408,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let iteration = 2; //Give index number from the example.json.data\ncy.visit('https://rc.synq7.com/');\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\ncy.wait(3000);\n// Navigate to ride booking page\ncy.wait(3000);\ncy.get('span.btn-text', {\n  timeout: 10000\n}).click({\n  force: true\n});\n//Filling Up Passenger Info\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > .form-control', {\n  timeout: 40000\n}).should('be.enabled').click().type('Bayes RideCentric');\ncy.get(':nth-child(1) > .booking-info-cards > .front-side > .form-group > .booking-search__left > .input-group > #basic-addon2', {\n  timeout: 40000\n}).should('be.visible').click();\n// Click the final button\ncy.get(':nth-child(1) > :nth-child(7) > .btn-success-main', {\n  timeout: 40000\n}).click();\n//Filling reservation details \ncy.get('.ngb-dp-today > .btn-light', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(5) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(11) > .time-link', {\n  timeout: 40000\n}).click();\ncy.get(':nth-child(2) > .time-zoon-link', {\n  timeout: 40000\n}).click();\ncy.get('.set-time-btn', {\n  timeout: 40000\n}).click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('3').click();\ncy.get('.ng-dropdown-panel-items', {\n  timeout: 40000\n}).contains('2').click();\ncy.fixture('example.json').then(data => {\n  // Get the current set of data based on iteration\n  const entry = data[iteration % data.length];\n  cy.get('#ReservationAddress0').type(entry.pickup_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress0').type('{downarrow}').type('{enter}');\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type(entry.dropoff_location);\n  cy.wait(2000);\n  cy.get('#ReservationAddress1').type('{downarrow}').type('{enter}');\n  cy.wait(3000);\n  //Click on Show Vehicle Button\n  cy.get('.btn', {\n    timeout: 40000\n  }).should('be.enabled').click({\n    force: true\n  });\n  //Click on desired vehicle\n  cy.get('.vehicle-details', {\n    timeout: 40000\n  }).contains(new RegExp(`^${entry.vehicle}$`)).click();\n  // Increment the iteration count for the next run\n});\n//Confirm Ride Button\ncy.get(':nth-child(4) > .justify-content-between', {\n  timeout: 40000\n}).click();\n//Click on Reserve Button\ncy.get('.res_btn_group > :nth-child(2)', {\n  timeout: 40000\n}).click();\n// //Credit Card\n// cy.get('#PassengerCard', { timeout: 40000 })\n//   .should('be.visible')\n//   .select('25110001', { force: true });\n// cy.get('.bbtn', { timeout: 40000 }).click()\n//ACH\ncy.get('#PaymentMethod', {\n  timeout: 40000\n}).should('be.visible').select('AH', {\n  force: true\n}).should('have.value', 'AH');\ncy.get('button.bbtn.btn-small', {\n  timeout: 40000\n}).click();\n//Retrieving Reservation Number\ncy.get('h3.mt-20', {\n  timeout: 40000\n}).invoke('text').then(text => {\n  const reservationNumber = text.match(/\\d+/)[0];\n  reservationNumbers.push(reservationNumber);\n  cy.log('Reservation Number:', reservationNumber);\n  console.log('Reservation Number:', reservationNumber);\n  // Store reservationNumber as an alias to use later\n  cy.wrap(reservationNumber).as('reservationNumber');\n});\n// Click on Dispatch Button after reservation\ncy.get('.d-flex > [routerlink=\"/ride/dispatch/dashboard\"]', {\n  timeout: 60000\n}).should('be.visible').click({\n  force: true\n});\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Get the reservationNumber from reservation page and use it in the next commands\ncy.get('@reservationNumber', {\n  timeout: 40000\n}).then(reservationNumber => {\n  cy.get(':nth-child(2) > :nth-child(2) > .form-group > .form-control', {\n    timeout: 40000\n  }).type(reservationNumber);\n  cy.get('#ngb-typeahead-3-0', {\n    timeout: 40000\n  }).click();\n  cy.get('.btn', {\n    timeout: 40000\n  }).click();\n  cy.wait(3000);\n});\n//Add to event\ncy.wait(3000);\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.wait(2000);\ncy.contains('Reservation Sync', {\n  timeout: 40000\n}).click();\ncy.contains('Add to Event', {\n  timeout: 40000\n}).click();\n// Select the event \ncy.wait(3000);\ncy.get('#EventCode', {\n  timeout: 40000\n}).select(Eventname, {\n  force: true\n}).should('have.value', Eventname);\ncy.wait(1000);\ncy.get('.btn', {\n  timeout: 40000\n}).click();",
+              "err": {},
+              "uuid": "52bacd0e-9086-4d7e-a1f1-440c29ab7728",
+              "parentUUID": "7b77ad05-1b60-471f-891e-bdaac5a0961e",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should search for reservation and remove from event",
+              "fullTitle": "Res Sync Flow Automation should search for reservation and remove from event",
+              "timedOut": null,
+              "duration": 8434,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('https://rc.synq7.com/');\n// Login process\ncy.get('.input-container > .ng-pristine', {\n  timeout: 40000\n}).type('bayes@test.com');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click();\ncy.get('#Password', {\n  timeout: 40000\n}).type('Bayestest25@');\ncy.get('.custom-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\ncy.url({\n  timeout: 40000\n}).should('include', 'dispatch/dashboard');\n//Click Find Ride\ncy.get('.inner-scroller > :nth-child(2) > :nth-child(2) > a', {\n  timeout: 60000\n}).click({\n  force: true\n});\n// Take the second last value of reservation from the array\ncy.get('[formcontrolname=\"f_resid\"]', {\n  timeout: 40000\n}).click().type(reservationNumbers[1]);\ncy.wait(1000);\ncy.get('#ngb-typeahead-3-0 > span', {\n  timeout: 40000\n}).click();\ncy.get('.btn', {\n  timeout: 40000\n}).click();\n//right click and remove from event\ncy.wait(3000);\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).click();\ncy.get('.tabulator-row > [tabulator-field=\"ResStatus\"]', {\n  timeout: 40000\n}).rightclick();\ncy.contains('Reservation Sync', {\n  timeout: 40000\n}).click();\ncy.contains('Remove from Event', {\n  timeout: 40000\n}).click();\ncy.get('.modal-primary__btn', {\n  timeout: 40000\n}).click();\ncy.get('.alert', {\n  timeout: 40000\n}).should('be.visible').and('contain.text', 'Deleted successfully!!');",
+              "err": {},
+              "uuid": "4bdd65c3-f2ab-4411-9261-26c0726e30ee",
+              "parentUUID": "7b77ad05-1b60-471f-891e-bdaac5a0961e",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should navigate to res link, enter otp, complete payment process",
+              "fullTitle": "Res Sync Flow Automation should navigate to res link, enter otp, complete payment process",
+              "timedOut": null,
+              "duration": 19557,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "//visit the generated link and input the OTP\ncy.visit(generateLink);\ncy.wait(2000);\ncy.focused().type(otp);\ncy.wait(8000);\n//Click on payment proceed button\ncy.get('.resSync-right__down > .button-large', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\n//Accept Terms & Condition Page\ncy.get('#acceptTerms', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\ncy.get('.resSync-right__down > .button-large', {\n  timeout: 40000\n}).should('be.visible').click();\ncy.wait(2000);\n//ACH\ncy.get('div.resSyncPayment-box__inner.ach', {\n  timeout: 40000\n}).should('be.visible').click({\n  force: true\n});\ncy.get('button.button-large.button-blue.resSync-btn', {\n  timeout: 40000\n}).click({\n  force: true\n});\n//Click on Go to Reservations Button\ncy.get('.reservation-btn-text', {\n  timeout: 40000\n}).click();\ncy.wait(2000);\n// //Credit Card\n// cy.get(':nth-child(1) > .resSyncPayment-box__inner', { timeout: 40000 }).click();\n// cy.wait(2000)\n// //Add New Credit Card\n// cy.get('.resSyncPayment-page__left > .button-large', { timeout: 40000 }).click()\n// cy.wait(2000)\n// //Filling Credit Card Informations\n// cy.get('.ccForm > #cardHolderName', { timeout: 40000 }).click().type('Bayes')\n// cy.wait(2000)\n// cy.get('.ccForm > #cardNumber', { timeout: 40000 }).click().type('4111111111111111')\n// cy.wait(2000)\n// cy.get('.ccForm > #expiryDate', { timeout: 40000 }).click().type('0828')\n// cy.wait(2000)\n// cy.get('.ccForm > #cvv', { timeout: 40000 }).click().type('888')\n// cy.wait(2000)\n// //Click on Confirm Reservation\n// cy.get('.resSync-right__down > .button-large', { timeout: 40000 }).should('be.visible').click()\n// cy.wait(2000)\n// //Link Copy\n// cy.get('.copy-icon', { timeout: 40000 }).click()\n// cy.wait(2000)\n// //Click on Go to Reservations Button\n// cy.get('.reservation-btn-text', { timeout: 40000 }).click()\n// cy.wait(2000)",
+              "err": {},
+              "uuid": "7a7a4860-ee46-438a-bf5d-eecb390c6c00",
+              "parentUUID": "7b77ad05-1b60-471f-891e-bdaac5a0961e",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "44713d74-ee3a-47a5-9025-22f142707b93",
+            "a92ede01-b436-4c10-a991-4305e17767e8",
+            "52bacd0e-9086-4d7e-a1f1-440c29ab7728",
+            "4bdd65c3-f2ab-4411-9261-26c0726e30ee",
+            "7a7a4860-ee46-438a-bf5d-eecb390c6c00"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 152543,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports/json",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

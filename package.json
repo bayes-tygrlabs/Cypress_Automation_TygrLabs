@@ -15,7 +15,7 @@
     "mergeAndGenerateReport": "npx mochawesome-merge cypress/reports/json/*.json > cypress/reports/output.json",
     "reportHtmlDirCreation": "mkdir -p cypress/reports/html",
     "mergeReport": "npx marge cypress/reports/output.json -f CombinedReport -o cypress/reports/html --inline",
-    "all" : "npm-run-all clearOldReports test mergeAndGenerateReport reportHtmlDirCreation mergeReport"
+    "all": "npm-run-all --continue-on-error clearOldReports test mergeAndGenerateReport reportHtmlDirCreation mergeReport"
     
   }
 }

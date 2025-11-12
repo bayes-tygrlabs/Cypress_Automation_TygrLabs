@@ -7,6 +7,7 @@ describe('Regression Test', () => {
 
     cy.visit('https://rc.synq7.com/');
 
+
     //Reservation Creation\\
 
     // Login process
