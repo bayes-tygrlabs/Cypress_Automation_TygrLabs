@@ -23,11 +23,11 @@ describe('Res Sync Flow Automation', () => {
 
     // Login process
     cy.get('.input-container > .ng-pristine', { timeout: 40000 })
-      .type('bayes@test.com');
+    .type('qaautomation@test.com');
     cy.get('.custom-btn', { timeout: 40000 }).click();
 
     cy.get('#Password', { timeout: 40000 })
-      .type('Bayestest25@');
+    .type('Qa123456@');
     cy.get('.custom-btn', { timeout: 40000 }).click({ force: true });
     cy.url({ timeout: 40000 }).should('include', 'dispatch/dashboard');
 
@@ -246,11 +246,11 @@ describe('Res Sync Flow Automation', () => {
 
       // Login process
       cy.get('.input-container > .ng-pristine', { timeout: 40000 })
-        .type('bayes@test.com');
+      .type('qaautomation@test.com');
       cy.get('.custom-btn', { timeout: 40000 }).click();
 
       cy.get('#Password', { timeout: 40000 })
-        .type('Bayestest25@');
+      .type('Qa123456@');
       cy.get('.custom-btn', { timeout: 40000 }).click({ force: true });
       cy.url({ timeout: 40000 }).should('include', 'dispatch/dashboard');
 

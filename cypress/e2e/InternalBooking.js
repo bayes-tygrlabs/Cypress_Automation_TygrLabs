@@ -8,11 +8,11 @@ describe('Dispatch Test', () => {
 
     // Login process
     cy.get('.input-container > .ng-pristine', { timeout: 40000 })
-      .type('bayes@test.com');
+      .type('qaautomation@test.com');
     cy.get('.custom-btn').click();
 
     cy.get('#Password', { timeout: 40000 })
-      .type('Bayestest25@');
+      .type('Qa123456@');
     cy.get('.custom-btn', { timeout: 40000 }).click({ force: true });
     cy.url({ timeout: 40000 }).should('include', 'dispatch/dashboard');
 
@@ -140,15 +140,15 @@ describe('Dispatch Test', () => {
 
     //Adding Second Stop
     cy.get('.stop-add', { timeout: 40000 }).click({ force: true })
-    cy.wait(1000)
+    cy.wait(5000)
     cy.get('#ReservationAddress', { timeout: 40000 })
       .click({ force: true })
       .type('Las')
-      .wait(1000)
+      .wait(5000)
       .type('{downarrow}')
       .type('{enter}');
     cy.get('.accordion-button', { timeout: 40000 }).click({ force: true })
-    cy.wait(500)
+    cy.wait(5000)
     cy.get('.accordion-body > :nth-child(1) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('6th')
     cy.get('.accordion-body > :nth-child(1) > :nth-child(2) > .form-group > .form-control', { timeout: 40000 }).click({ force: true }).type('Ring Road')
     cy.get('.mb-3 > :nth-child(3) > .form-group > .form-control', { timeout: 40000 }).click().type('5000')
