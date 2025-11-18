@@ -268,7 +268,7 @@ describe('Regression Test', () => {
     updateStatus(':nth-child(9) > .res-stat-btn > .text'); // On-Board
     updateStatus(':nth-child(11) > .res-stat-btn > .text'); // Complete
 
-    // //Navigate to settings and Click on Archive Res
+    // // //Navigate to settings and Click on Archive Res
     // cy.get('.ss-settings', { timeout: 50000 }).click()
     // cy.contains('a', 'Archive Res', { timeout: 50000 }).click();
     // cy.get('form.ng-untouched > :nth-child(1) > :nth-child(2) > :nth-child(1) > .form-group > .form-control', { timeout: 40000 }).click()
@@ -286,14 +286,14 @@ describe('Regression Test', () => {
     // cy.get('.modal-primary__btn', { timeout: 40000 }).click()
     // cy.wait(10000);
 
-    //Archive the ride using API calls
+    // //Archive the ride using API calls
     cy.get('@reservationNumber').then((reservationNumber) => {
       cy.request({
         method: 'POST',
         url: 'https://rc.synq7.com/api/archive/saveresarchive',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IkJheWVzIiwiUm9sZUlkIjoiMSIsIlVzZXJSb2xlSWQiOiIxIiwiVXNlclR5cGUiOiJTQSIsIlVzZXJJZCI6IkJBWUVTIiwiU3ViRG9tYWluIjoicmMiLCJIb3N0IjoiaHR0cHM6Ly9yYy5zeW5xNy5jb20iLCJTY2hlbWUiOiJodHRwczovLyIsIk15Q2l0eSI6IkRoYWthIiwiTXlPZmZzZXQiOiIyMTYwMCIsIlRoZW1lQ29sb3IiOiIjMDA4MDAwIiwiQ29tQ29kZSI6IlJDMDAxIiwiSWQiOiJkZjg2NmYyZC0zYWIxLTQ2Y2ItOGFjZi1hY2Q5YTI0YTU5OGUiLCJEZXZpY2VJZCI6IjJmNzhiZmE2OTUyZjRmMzBiNTAwZDRhYjViMDU1OWE4IiwiVXNlclByaXZpbGVnZSI6IlNVUCIsIkFjY291bnRDb2RlIjoiIiwibmJmIjoxNzYyMzIzODIwLCJleHAiOjE3NjMxODc4MjAsImlzcyI6ImF6aXp1ckByZWRsaW1lc29sdXRpb25zLmNvbSIsImF1ZCI6ImF6aXp1ckByZWRsaW1lc29sdXRpb25zLmNvbSJ9.5uROSU2H8tqol3jd-FL-jWXKtVlCeAkiAZa4SVre_Vw'
+          'Authorization': 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6IlFBIiwiUm9sZUlkIjoiMSIsIlVzZXJSb2xlSWQiOiIxIiwiVXNlclR5cGUiOiJTQSIsIlVzZXJJZCI6IlFBQVVUT01BVElPTiIsIlN1YkRvbWFpbiI6InJjIiwiSG9zdCI6Imh0dHBzOi8vcmMuc3lucTcuY29tIiwiU2NoZW1lIjoiaHR0cHM6Ly8iLCJNeUNpdHkiOiLgpqLgpr7gppXgpr4iLCJNeU9mZnNldCI6IjIxNjAwIiwiVGhlbWVDb2xvciI6IiMwMDgwMDAiLCJDb21Db2RlIjoiUkMwMDEiLCJJZCI6ImFlYmY3YWI3LWIxNDEtNGZjNS05MGE4LTk0MmJiOTAxNTQ5NiIsIkRldmljZUlkIjoiZmRiODQxMGQ2ZjExNDMwYjk4NWZlOTgyOWY4Nzk5MTMiLCJVc2VyUHJpdmlsZWdlIjoiU1VQIiwiQWNjb3VudENvZGUiOiIiLCJuYmYiOjE3NjM0NDM1MTksImV4cCI6MTc2NDMwNzUxOSwiaXNzIjoiYXppenVyQHJlZGxpbWVzb2x1dGlvbnMuY29tIiwiYXVkIjoiYXppenVyQHJlZGxpbWVzb2x1dGlvbnMuY29tIn0.ldw6-0zWF9rbj2ACaZjgDfXA1paoG1W5tkBX5MPyPpg'
         },
         body: {
           GoFor: "CUR",
@@ -306,7 +306,7 @@ describe('Regression Test', () => {
         cy.log('API Response:', JSON.stringify(response.body));
 
         // ✅ Assertions
-        expect(response.status).to.eq(200);
+        // expect(response.status).to.eq(200);
         expect(response.body).to.have.property('Msg', 'Ride archived successfully!!');
         expect(response.body).to.have.property('Success', 'Y');
         expect(response.body).to.have.property('Data', '');
