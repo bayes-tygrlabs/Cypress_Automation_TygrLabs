@@ -6,11 +6,11 @@ module.exports = defineConfig({
       // Implement node event listeners here
     },
     specPattern: 'cypress/e2e/*.js',
-    reporter: 'mochawesome', // Specify mochawesome as the reporter
+    reporter: 'mochawesome',// Specify mochawesome as the reporter
     reporterOptions: {
       reportDir: 'cypress/reports/json', // Directory for saving the reports
       overwrite: false, // Avoid overwriting reports
-      html: false, // Generate HTML reports
+      html: true, // Generate HTML reports
       json: true, // Generate JSON reports
     },
     headless: true,
