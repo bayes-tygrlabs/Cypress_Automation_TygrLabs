@@ -1,11 +1,5 @@
 import { faker } from '@faker-js/faker';
 
-// //For debugging purpose.
-// let generateLink = 'https://rc.synq7.com/res-sync/passkey?link=e73eaba84cb8';
-// let otp = 8018;
-// let Eventname = '58413726';
-// let reservationNumbers = ["25030168","25030169"];
-
 //Global Variables
 let generateLink = '';
 let otp;
@@ -213,12 +207,12 @@ describe('Res Sync Flow Automation', () => {
     // cy.get('.right', { timeout: 40000 }).click()
     // cy.get('.ngb-dp-day').contains('28').click();
 
-    //Applying Discounts
-    cy.get(':nth-child(3) > :nth-child(1) > .card > .mb-3 > [role="button"] > .ss-lock').click()
-    cy.get('.modal-primary__btn').click()
-    cy.get('.col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click().type(789789)
-    cy.contains('button', 'Save', { timeout: 40000 }).click();
-    cy.wait(6000)
+    // // //Applying Discounts
+    // cy.get('i.ss-lock.lock', { timeout: 40000 }).click()
+    // cy.get('.modal-primary__btn').click()
+    // cy.get('.col-sm-12 > .form-group > .form-control', { timeout: 40000 }).click().type(789789)
+    // cy.contains('button', 'Save', { timeout: 40000 }).click();
+    // cy.wait(6000)
     cy.get(':nth-child(2) > .card > .row > :nth-child(2) > .d-flex > .input-group > .form-control', { timeout: 40000 }).click().type('10');
     cy.contains('button', 'Generate Link').click();
 
