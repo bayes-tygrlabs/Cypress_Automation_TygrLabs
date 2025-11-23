@@ -8,7 +8,7 @@ let reservationNumbers = [];
 
 
 
-describe('Res Sync Flow Automation', () => {
+describe('RideSync Flow Automation', () => {
   it('should create a reservation, generate a link, set the event name, update the due date, apply discounts, generate the final link, copy it, extract OTP and store OTP', () => {
 
     let iteration = 2;  //Give index number from the example.json.data
