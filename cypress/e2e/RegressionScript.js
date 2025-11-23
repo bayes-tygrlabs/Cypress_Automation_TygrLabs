@@ -1,6 +1,6 @@
 const { faker } = require("@faker-js/faker");
 
-describe('Regression Test', () => {
+describe('Reservation workflow Test', () => {
   it('should complete the entire ride booking workflow including login, passenger info, reservation, dispatch, sending emails and status updates', () => {
 
     let iteration = 0;  //Give index number from the example.json.data
