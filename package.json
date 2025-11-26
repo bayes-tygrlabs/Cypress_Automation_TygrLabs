@@ -13,8 +13,7 @@
     "clearOldReports": "rm -rf cypress/reports",
     "test": "npx cypress run --spec 'cypress/e2e/InternalBooking.js,cypress/e2e/RegressionScript.js,cypress/e2e/ResSync.js' --browser chrome",
     "mergeAndGenerateReport": "npx mochawesome-merge cypress/reports/json/*.json > cypress/reports/output.json",
-    "reportHtmlDirCreation": "mkdir -p cypress/reports/html",
     "mergeReport": "npx marge cypress/reports/output.json -f index -o cypress/reports/html --inline",
-    "all": "npm-run-all --continue-on-error clearOldReports test mergeAndGenerateReport reportHtmlDirCreation mergeReport"
+    "all": "npm-run-all --continue-on-error clearOldReports test mergeAndGenerateReport mergeReport"
   }
 }
