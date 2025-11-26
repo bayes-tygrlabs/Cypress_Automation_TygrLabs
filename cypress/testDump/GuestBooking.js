@@ -42,7 +42,7 @@ describe('Guest Booking', () => {
         const firstName = faker.person.firstName();
         const lastName = faker.person.lastName();
         const email = faker.internet.email();
-        const mobileNumber = faker.phone.number('##########'); // Generates a 10-digit number
+        const mobileNumber = faker.phone.number('##########');
 
         cy.get('#FirstName', { timeout: 40000 }).click().type(firstName);
         cy.get('#LastName', { timeout: 40000 }).click().type(lastName);
@@ -54,9 +54,9 @@ describe('Guest Booking', () => {
 
         // Perform action based on input parameter
         if (action === 'quote') {
-            cy.get('.btn-ghost', { timeout: 40000 }).click(); // Click Save as Quote
+            cy.get('.btn-ghost', { timeout: 40000 }).click();
         } else if (action === 'reserve') {
-            cy.get('.res_btn_group > :nth-child(2)', { timeout: 40000 }).click(); // Click Reserve Button
+            cy.get('.res_btn_group > :nth-child(2)', { timeout: 40000 }).click();
         }
     }
 
